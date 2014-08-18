@@ -15,7 +15,7 @@ var mime = require("mime");
 var grunt_fetch = require("./fetch");
 
 // Cache regex's
-var rImages = /([\s\S]*?)(url\(([^)]+)\))(?![^;]*;\s*\/\*\s*ImageEmbed:skip\s*\*\/)|([\s\S]+)/img;
+var rImages = /([\s\S]*?)(url64\(([^)]+)\))|([\s\S]+)/img;
 var rExternal = /^(http|https|\/\/)/;
 var rSchemeless = /^\/\//;
 var rData = /^data:/;
@@ -184,7 +184,6 @@ exports.init = function(grunt) {
 
       // External URL?
     } else if(rExternal.test(img)) {
-      grunt.log.writeln("Encoding file: " + img);
       fetch.image(img, function(err, src, cacheable) {
         var encoded, type;
         if (err == null) {
@@ -203,7 +202,6 @@ exports.init = function(grunt) {
         return;
       }
 
-      grunt.log.writeln("Encoding file: " + img);
 
       // Read the file in and convert it.
       var src = fs.readFileSync(img);
